@@ -1,0 +1,28 @@
+{% extends "generic.html" %}
+{% block title %}Register{% endblock %}
+{% block head %}
+  {{ super() }}
+{% endblock %}
+{% block content %}
+<h1>Register Now!</h1>
+<form action='' method="post">
+  <legend>Register Now!</legend>
+  <label for="fullname">First and Last Name</label>
+  <input type="text" id="fullname" name="fullname">Full Name</input>
+  <label for="email">Email Address</label>
+  <input type="text" id="email" name="email">Email</input>
+  <label for="password">Password</label>
+  <input type="text" id="password" name="password">Password</input>
+  <legend>Restaurant Information</legend>
+  <label for="b_name">Restaurant Title</label>
+  <input type="text" id="b_name" name="b_name">Restaurant Name</input>
+  <label for="description">Short Description</label>
+  <textarea id="description" name="description">Enter a short description of your restaurant here</textarea>
+  <label for="menu">Menu</label>
+  <input type="text" id="menu" name="menu">
+  <button class="btn btn-info" type="submit">Sign Up</button>
+  <hr>
+  <p class="text-muted">Have an account? <a href="/login">Sign In</a></p>
+</form>
+
+{% endblock %}

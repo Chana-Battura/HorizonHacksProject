@@ -1,0 +1,68 @@
+<!-- <html>
+  <head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
+
+    <link rel='stylesheet' type='text/css' href='style.css'>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script src='script.js'></script>
+  </head>
+  <body> -->
+{% extends "generic.html" %}
+{% block title %}Register{% endblock %}
+{% block head %}
+  {{ super() }}
+{% endblock %}
+{% block content %}
+    <button class='snackbar' id='message' onclick='hide(this)'>
+    </button>
+
+    <div id="bg-modal" class="bg-modal">
+      <div class="modal-content">
+        <div class='info'>
+          <h2>Start a journey of education today.</h2>
+        </div>
+        <div class='login-box'>
+          <form id='login-form' action='{{ url_for("handle_login") }}' method='post'>
+            <div>
+              <input class='input-field' id='username' type='text' name='username' required>
+              <label class='floating' for='username'>Username</label>
+            </div>
+            <div>
+              <input class='input-field' id='password' type='password' name='password' required>
+              <label class='floating' for='password'>Password</label>
+            </div>
+            <button class='button'>Submit</button><br>
+            <div class='swap-forms'>
+              <a class='text-button' href='#'>Lost your password?</a><br>
+              <a class='text-button' href='#'>Don't have an account?</a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+<!--
+    <div class='container'>
+    <div class='info'>
+      <h2>Start a journey of education today.</h2>
+    </div>
+    <div class='login-box'>
+      <form id='login-form' action='{{ url_for("handle_login") }}' method='post'>
+        <div>
+          <input class='input-field' id='username' type='text' name='username' required>
+          <label class='floating' for='username'>Username</label>
+        </div>
+        <div>
+          <input class='input-field' id='password' type='password' name='password' required>
+          <label class='floating' for='password'>Password</label>
+        </div>
+        <button class='button'>Submit</button><br>
+        <div class='swap-forms'>
+          <a class='text-button' href='#'>Lost your password?</a><br>
+          <a class='text-button' href='#'>Don't have an account?</a>
+        </div>
+      </form>
+    </div>
+    </div>
+-->
+{% endblock %}
