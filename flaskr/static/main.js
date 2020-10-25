@@ -228,13 +228,4 @@
 //     document.getElementById('loading').style.display = 'none';
 //     document.getElementById('entry-map').style.display = 'block';
 // };
-let map;
-
-function initMap() {
-  map = new google.maps.Map(document.getElementById("entry-map"), {
-    center: { lat: -34.397, lng: 150.644 },
-    zoom: 8,
-  });
-}
-
 

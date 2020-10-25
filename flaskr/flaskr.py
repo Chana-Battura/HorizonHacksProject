@@ -1,5 +1,5 @@
 from flask import Flask, jsonify, request, render_template, redirect, url_for
-import external, script
+import external, script, requests
 import main_backend
 import pprint
 import sqlite3
@@ -63,7 +63,12 @@ def login():
 
 @app.route("/home", methods=["get", "post"])
 def home():
-    return render_template("home.html")
+    data = main_backend.get_store_data()
+    new_data = []
+    for i in data:
+        new_data.append(list(i))
+    print(new_data)
+    return render_template("home.html", data=new_data)
 
 @app.route("/")
 def landing():
