@@ -1,12 +1,12 @@
-var theme = 'dark';
+var theme = 'light';
 function toggle_theme(){
   document.documentElement.classList.add('transition');
-  if (theme === 'dark'){
+  if (theme === 'light'){
     document.documentElement.setAttribute('theme', 'light');
     theme = 'light';
   }else{
     document.documentElement.setAttribute('theme', 'dark');
-    theme = 'dark';
+    theme = 'light';
   }
   window.setTimeout(function() {
     document.documentElement.classList.remove('transition');

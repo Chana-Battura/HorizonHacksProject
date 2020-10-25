@@ -1,5 +1,8 @@
-from flask import Flask, jsonify, request, render_template
+from flask import Flask, jsonify, request, render_template, redirect, url_for
 import external, script
+import main_backend
+import pprint
+import sqlite3
 app = Flask(__name__)
 
 # @app.route('/hello', methods=['GET', 'POST'])
@@ -25,6 +28,48 @@ app = Flask(__name__)
 #         print(request.form)
 #     return render_template('index.html')
 
-@app.route('/register', methods=['get', 'post'])
+
+@app.route("/register", methods=["get", "post"])
 def register():
-    return render_template('register.html')
+    if request.method == "POST":
+        r_data = (request.form)
+        r_data = r_data.to_dict(flat=False)
+        pprint.pprint(r_data)
+        main_backend.register(
+            r_data['fullname'][0],
+            r_data['email'][0],
+            r_data['password'][0],
+            r_data['fullname'][0],
+            r_data['b_name'][0],
+            r_data['location'][0],
+            r_data['menu'][0],
+            r_data['description'][0])
+        return redirect("/home")
+    else:
+        return render_template("register.html")
+
+
+@app.route("/login", methods=["get", "post"])
+def login():
+    #MAKE SURE USER IS NOT ALREADY LOGGED IN, IF THEY ARE REDIRECT
+    if request.method=='POST':
+        l_data = request.form
+        l_data = l_data.to_dict(flat=False)
+        validate = main_backend.validate(l_data['email'][0], l_data['password'][0])
+        if validate == True:
+            return redirect('/home')
+    return render_template('login.html')
+
+
+@app.route("/home", methods=["get", "post"])
+def home():
+    return render_template("home.html")
+
+@app.route("/")
+def landing():
+    main_backend.setup_database()
+    return render_template("landing.html")
+
+@app.route('/json')
+def json():
+    return jsonify({'hi': 'bye'})

@@ -4,7 +4,9 @@ import sqlite3
 from ipstack import GeoLookup
 from requests import get
 
-'''ip = get('https://api.ipify.org').text
+connection = sqlite3.connect("HorizonHacks.db", check_same_thread=False)
+cursor = connection.cursor()
+"""ip = get('https://api.ipify.org').text
 
     geo_lookup = GeoLookup("63096ef2c875f22104912c0dafdb2af0")
     try:
@@ -16,57 +18,67 @@ from requests import get
             u_latitude=(location['latitude'])
             u_longitude=(location['longitude'])
     except Exception as e:
-        print(e)'''
-
+        print(e)"""
 
 
 def setup_database():
-    connection = sqlite3.connect('HorizonHacks.db')
-    cursor = connection.cursor()
 
     command1 = """CREATE TABLE IF NOT EXISTS
     profiles(full_name TEXT, email_address TEXT, password TEXT, flag INTEGER)"""
 
     command2 = """CREATE TABLE IF NOT EXISTS
     stores(owner_name TEXT, name TEXT, location TEXT, menu TEXT, description TEXT, lat REAl, lon REAL)"""
-    connection.close()
 
     cursor.execute(command1)
     cursor.execute(command2)
 
-def register(name, email, password, b_name, location, menu, description):
-    connection = sqlite3.connect('HorizonHacks.db')
-    cursor = connection.cursor()
-    cursor.execute("INSERT INTO profiles VALUES ('{}', '{}', '{}', 0)".format(name, email, password))
+
+def register( name, email, password, owner_name, b_name, location, menu, description):
+    cursor.execute(
+        "INSERT INTO profiles VALUES ('{}', '{}', '{}', 0)".format(
+            name, email, password
+        )
+    )
 
     g = geocoder.arcgis(location)
     temp = g.json
-    coordinates = [temp['lat'], temp['lng']]
-    cursor.execute("INSERT INTO stores VALUES ('{}', '{}', '{}', '{}', {}, {})".format(b_name, location, menu, description, coordinates[0], coordinates[1]))
-    connection.close()
+    coordinates = [temp["lat"], temp["lng"]]
+    cursor.execute(
+        "INSERT INTO stores VALUES ('{}', '{}', '{}', '{}', '{}', {}, {})".format(
+            owner_name, b_name, location, menu, description, coordinates[0], coordinates[1]
+        )
+    )
+    print_stores()
+    print_login()
 
 
-def print_login(cursor):
-    connection = sqlite3.connect('HorizonHacks.db')
-    cursor = connection.cursor()
-    cursor.execute('SELECT * FROM profiles')
+def print_login():
+    cursor.execute("SELECT * FROM profiles")
     print(cursor.fetchall())
-    connection.close()
+
+def validate(email, password):
+    print_login()
+    cursor.execute("SELECT * FROM profiles")
+    data = cursor.fetchall()
+    connection.commit()
+
+    print(data)
+    for i in data:
+        print(type(i[1]))
+        print(i[2])
+        if i[1] == email and i[2] == password:
+            return True
+    return False
 
 
-def print_stores(cursor):
-    connection = sqlite3.connect('HorizonHacks.db')
-    cursor = connection.cursor()
-    cursor.execute('SELECT * FROM stores')
+
+def print_stores():
+    cursor.execute("SELECT * FROM stores")
     print(cursor.fetchall())
-    connection.close()
 
 
-
-def print_distance_between(cursor, location_user = []):
-    connection = sqlite3.connect('HorizonHacks.db')
-    cursor = connection.cursor()
-    cursor.execute('SELECT * FROM stores')
+def print_distance_between( location_user=[]):
+    cursor.execute("SELECT * FROM stores")
     data = cursor.fetchall()
     print(data)
     distances = []
@@ -78,10 +90,11 @@ def print_distance_between(cursor, location_user = []):
         phi2 = np.radians(lat2)
         delta_phi = np.radians(lat2 - lat1)
         delta_lambda = np.radians(lon2 - lon1)
-        a = np.sin(delta_phi / 2)**2 + np.cos(phi1) * np.cos(phi2) *   np.sin(delta_lambda / 2)**2
+        a = (
+            np.sin(delta_phi / 2) ** 2
+            + np.cos(phi1) * np.cos(phi2) * np.sin(delta_lambda / 2) ** 2
+        )
         res = r * (2 * np.arctan2(np.sqrt(a), np.sqrt(1 - a)))
         distances.append(np.round(res, 2))
-    connection.close()
 
-    return [x for _,x in sorted(zip(distances,data))]
-
+    return [x for _, x in sorted(zip(distances, data))]
