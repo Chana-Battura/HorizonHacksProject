@@ -292,12 +292,32 @@ h2 {
   margin:5px;
   border-radius:50%;
 }
-html, body, #entry-map {
+#map {
+  height: 500px;
+  width: 500px;
+}
+
+/* Optional: Makes the sample page fill the window. */
+html,
+body {
+  height: 100%;
   margin: 0;
   padding: 0;
-  height: 100%;
-  width: 100%;
 }
-#entry-map {
-  height: 500px;
+.entry_list_div {
+  border-radius: 20px;
+  background-color: white;
+  padding: 10px;
+  overflow: scroll;
+}
+#entry_list_div {
+  border-radius: 20px;
+  background-color: white;
+  padding: 10px;
+  overflow: scroll;
+}
+footer {
+  float: center;
+  text-align: center;
+  color:yellow;
 }

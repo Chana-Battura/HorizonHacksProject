@@ -3,6 +3,9 @@ import geocoder
 import sqlite3
 from ipstack import GeoLookup
 from requests import get
+import googlemaps
+
+    
 
 connection = sqlite3.connect("HorizonHacks.db", check_same_thread=False)
 cursor = connection.cursor()
@@ -40,12 +43,14 @@ def register( name, email, password, owner_name, b_name, location, menu, descrip
         )
     )
 
-    g = geocoder.arcgis(location)
-    temp = g.json
-    coordinates = [temp["lat"], temp["lng"]]
+    gmaps = googlemaps.Client(key='AIzaSyB9sx96qabluloodazrX5o-PSKcSn1zhNs')
+
+    geocode_result = gmaps.geocode(location)
+    x = geocode_result[0]['geometry']['location']
+    print(x)
     cursor.execute(
         "INSERT INTO stores VALUES ('{}', '{}', '{}', '{}', '{}', {}, {})".format(
-            owner_name, b_name, location, menu, description, coordinates[0], coordinates[1]
+            owner_name, b_name, location, menu, description, x['lat'], x['lng']
         )
     )
     print_stores()
@@ -72,9 +77,15 @@ def validate(email, password):
 
 
 
+def get_store_data():
+    cursor.execute("SELECT * FROM stores")
+    connection.commit()
+    return (cursor.fetchall())
+
 def print_stores():
     cursor.execute("SELECT * FROM stores")
     print(cursor.fetchall())
+
 
 
 def print_distance_between( location_user=[]):

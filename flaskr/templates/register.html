@@ -3,6 +3,12 @@
 {% block head %}
 {{ super() }}
 {% endblock %}
+<head>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+</head>
 {% block content %}
 <button class='snackbar' id='message' onclick='hide(this)'>
 </button>
@@ -13,26 +19,39 @@
       <h2>Register here</h2>
     </div>
     <div class='login-box'>
-      <form action='/register' method="post">
-        <legend>Register Now!</legend>
-        <label class="floating" for="fullname">First and Last Name</label>
-        <input class="input-field" type="text" id="fullname" name="fullname" required></input>
-        <label class="floating" for="email">Email Address</label>
-        <input class="input-field" type="text" id="email" name="email" required></input>
-        <label class="floating" for="password">Password</label>
-        <input class="input-field" type="password" id="password" name="password" required></input>
-        <legend>Restaurant Information</legend>
-        <label class="floating" for="b_name">Restaurant Title</label>
+      <form action='/register' method="post" id="login-form">
+        <div>
+          <input class="input-field" type="text" id="fullname" name="fullname" required></input>
+          <label class="floating" for="fullname">First and Last Name</label>
+        </div>
+        <div>
+          <input class="input-field" type="text" id="email" name="email" required></input>
+          <label class="floating" for="email">Email Address</label>
+        </div>
+        <div>
+          <input class="input-field" type="password" id="password" name="password" required></input>
+          <label class="floating" for="password">Password</label>
+        </div>
+      <div>
         <input class="input-field" class="input-field" type="text" id="b_name" name="b_name" required></input>
+        <label class="floating" for="b_name">Restaurant Title</label>
+      </div>
+      <div>
+        <textarea id="description" name="description" required style="margin-top: 30px;"></textarea>
         <label class="floating" for="description">Short Description</label>
-        <textarea id="description" name="description" required></textarea>
-        <label class="floating" for="menu">Menu</label>
+      </div>
+      <div>
         <input class="input-field" type="text" id="menu" name="menu" required></input>
-        <label class="floating" for="location">Address</label>
+        <label class="floating" for="menu">Menu</label>
+      </div>
+      <div>
         <input class="input-field" type="text" id="location" name="location" required></input>
-        <button class="btn btn-info" type="submit">Sign Up</button>
-        <hr>
-        <p class="text-muted">Have an account? <a href="/login">Sign In</a></p>
+        <label class="floating" for="location">Address</label>
+      </div>
+        <button class="button" type="submit">Sign Up</button>
+        <div class='swap-forms'>
+          <a class='text-button' href='{{ url_for("login") }}'>Have an account?</a>
+        </div>
       </form>
     </div>
   </div>

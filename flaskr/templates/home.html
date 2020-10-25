@@ -1,8 +1,205 @@
-{% extends "generic.html" %}
-{% block title %}Map{% endblock %}
-{% block head %}{% endblock %}
-{% block content %}
+<!DOCTYPE html>
+<html>
 
-<div id="entry-map"></div>
+<head>
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" /> -->
+    <!-- <link rel='stylesheet' type='text/css' href="{{ url_for('static', filename='style.css') }}"> -->
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>     -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <title>Local Restaurants</title>
+    <script
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB9sx96qabluloodazrX5o-PSKcSn1zhNs&callback=initMap&libraries=&v=weekly"
+        defer></script>
 
-{% endblock %}
+    <style type="text/css">
+        #main-flex {
+            display: flex;
+        }
+
+        #map {
+            width: 100%;
+            height: 100%;
+        }
+
+        .entry-list-div {
+            border-radius: 5px;
+            border: 1px solid grey;
+            padding: 10px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            background-color: white;
+        }
+
+        #entry_list_div {
+            border-radius: 20px;
+            padding: 10px;
+            overflow: scroll;
+            flex: 1;
+            height: 800px;
+        }
+
+        /* Set the size of the div element that contains the map */
+        #map {
+            height: 800px;
+            /* The height is 400 pixels */
+            width: 100%;
+            flex: 2;
+            /* The width is the width of the web page */
+        }
+
+        h2 {
+            font-family: 'Gugi';
+            display: inline-block;
+            background-color: #00000000;
+        }
+
+        body {
+            background-color: white;
+        }
+
+        #entry_list_inner {
+            background-image: linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%);
+        }
+
+        #myNavbar {
+            background-color: rgba(228, 228, 228, 0.89);
+        }
+        
+    </style>
+    <script>
+
+        // Initialize and add the map
+        var data = {{ data| safe }}
+        console.log('Here is the list?:')
+        console.log(data)
+        function initMap() {
+            function success(GeolocationPosition) {
+                var coords = GeolocationPosition.coords;
+                lat = coords.latitude
+                lng = coords.longitude
+                console.log(lat, lng)
+                map.setCenter({ lat: lat, lng: lng })
+
+
+            }
+            function failure() {
+                console.log('failed')
+            }
+            window.navigator.geolocation.getCurrentPosition(success, failure);
+
+            var map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 10,
+                center: new google.maps.LatLng(-33.92, 151.25),
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            });
+
+            var infowindow = new google.maps.InfoWindow();
+
+            var marker, i;
+
+            var locations = []
+            var index = 1
+            console.log(data)
+            for (i=0; i<data.length; i++){
+                locations.push([data[i][1], data[i][5], data[i][6], i])
+            };
+            console.log(locations)
+            /*var locations = [
+      ['Bondi Beach', -33.890542, 151.274856, 4],
+      ['Coogee Beach', -33.923036, 151.259052, 5],
+      ['Cronulla Beach', -34.028249, 151.157507, 3],
+      ['Manly Beach', -33.80010128657071, 151.28747820854187, 2],
+      ['Maroubra Beach', -33.950198, 151.259302, 1]
+    ];  */
+            for (i = 0; i < locations.length; i++) {
+                marker = new google.maps.Marker({
+                    position: new google.maps.LatLng(locations[i][1], locations[i][2]),
+                    map: map
+                });
+                console.log(marker)
+
+                google.maps.event.addListener(marker, 'click', (function (marker, i) {
+                    return function () {
+                        infowindow.setContent(locations[i][0]);
+                        infowindow.open(map, marker);
+                    }
+                })(marker, i));
+            }
+
+            // The map, centered at Uluru
+            /*const map = new google.maps.Map(document.getElementById("map"), {
+                zoom: 10,
+                center: mhouse,
+            });
+
+            const marker = new google.maps.Marker({
+                position: mhouse,
+                map: map,
+            });
+            var locations = []
+            data.forEach(function (element) {
+                locations.push([element[1], element[5], element[6]])
+            });
+            /*var marker, i;
+            for (i = 0; i < locations.length; i++) {
+                marker = new google.maps.Marker({
+                    position: new google.maps.LatLng(locations[i][1], locations[i][2]),
+                    map: map
+                });
+            }*/
+
+
+            /*
+                        var marker, i;
+            
+                        for (i = 0; i < locations.length; i++) {
+                            marker = new google.maps.Marker({
+                                position: new google.maps.LatLng(locations[i][0], locations[i][1]),
+                                map: map
+                            });
+                        }*/
+        }
+
+    </script>
+    <!-- <script src="{{ url_for('static', filename='script.js') }}"></script> -->
+    <!-- <script src="{{ url_for('static', filename='main.js') }}"></script> -->
+</head>
+
+<body>
+    <nav>
+    <div class="collapse navbar-collapse" id="myNavbar">
+        <ul class="nav navbar-nav">
+            <li class="active"><a href="/">Home</a></li>
+            <li><a href="/login"><span class="glyphicon glyphicon-user"></span> Profile</a></li>
+            <li><a href="/home">Maps</a></li>
+            <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">Options <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                    <li><a href="#">Assistance</a></li>
+                    <li><a href="#">Profile settings</a></li>
+
+                    <!--         	<li class="nav-item"> <a class="nav-link disabled" href="#">Disabled</a> </li>-->
+                </ul>
+                
+    </div>
+    </nav>
+    <hr style="visibility: hidden;"></hr>
+
+    <div id="main-flex">
+        <div id="entry_list_div" class='flex-item'>
+            {% for entry in data %}
+            <div class="entry-list-div" id="entry_list_inner">
+                <h3>{{ entry[1] }}</h3>
+                <span class="text-muted">Owner name: {{ entry[0] }}</span>
+                <p>{{ entry[4] }}</p>
+                <hr>
+                <p>{{ entry[2] }}</p>
+            </div>
+            {% endfor %}
+        </div>
+        <div id="map" class="flex-item"></div>
+    </div>
+</body>
+
+</html>
