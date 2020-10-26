@@ -5,9 +5,12 @@ In the midst of this pandemic, small and local businesses have taken the brunt o
 
 A website designed to divert internet traffic from large transnational restaurants, to local small-scale restaurants in order to keep businesses from going under and the economy from crashing.
 
+INSTALLING EXTERNAL DEPENDENCIES 
+1. pip install googlemaps
+2. pip install ipstack
+3. pip install geocoder
 
 HOW TO RUN
-
 1. Navigate to terminal
 2. Pip install flask
 3. Cd into directory flaskr
