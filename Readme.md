@@ -1,23 +1,22 @@
-FindDine!: 
+# FindDine
 A website designed to divert internet traffic from large transnational restaurants, to local small-scale restaurants in order to keep businesses from going under and the economy from crashing.
 
 In the midst of this pandemic, small and local businesses have taken the brunt of the economic crash. Our website aims to help these businesses by helping give internet exposure to small businesses. This website will help turn greater profits at the local scale, and help everybody get through this lockdown.
 
-A website designed to divert internet traffic from large transnational restaurants, to local small-scale restaurants in order to keep businesses from going under and the economy from crashing.
 
-INSTALLING EXTERNAL DEPENDENCIES 
-1. pip install googlemaps
-2. pip install ipstack
-3. pip install geocoder
+## Installing Dependencies
+- ```pip install googlemaps```
+- ```pip install ipstack```
+- ```pip install geocoder```
 
-HOW TO RUN
-1. Navigate to terminal
-2. Pip install flask
-3. Cd into directory flaskr
-4. export FLASK_APP=flaskr.py
-5. export FLASK_ENV=development
-6. python3 -m flask run
-7. Type in localhost:5000 in your web browser
+## How to Run
+- Navigate to terminal
+- ```pip install flask```
+- Cd into directory flaskr
+- ```export FLASK_APP=flaskr.py```
+- ```export FLASK_ENV=development```
+- ```python3 -m flask run```
+- Type in localhost:5000 in your web browser
 
-NOTE:
-Api key not listed
+## Warning
+- For security reasons, the api key needed to authorize the map has not been included
